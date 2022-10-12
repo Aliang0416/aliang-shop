@@ -4,7 +4,9 @@
       <!-- 面包屑 -->
       <XtxBread>
         <XtxBreadItem to="/">首页</XtxBreadItem>
-        <XtxBreadItem>{{topCategory.name}}</XtxBreadItem>
+        <transition name="fade-right" mode="out-in">
+        <XtxBreadItem :key="topCategory.id">{{topCategory.name}}</XtxBreadItem>
+        </transition>
       </XtxBread>
       <!-- 轮播图 -->
       <XtxCarousel :sliders="sliders" auto-play style="height:500px" />
@@ -68,7 +70,7 @@ export default {
       })
     }
     watch(() => route.params.id, (newVal) => {
-      newVal && getSubList()
+      if (newVal && `/category/${newVal}` === route.path) getSubList()
     }, { immediate: true })
     return { sliders, topCategory, subList }
   },
