@@ -48,7 +48,7 @@ const defineDirective = (app) => {
           observe.unobserve(el)
         }
       }, {
-        threshold: 0.01
+        threshold: 0
       })
       // 进行观察
       observe.observe(el)
