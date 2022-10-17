@@ -86,7 +86,6 @@ export default {
     }
     // 监听排序改变
     const changeSort = (sortParams) => {
-      console.log(sortParams)
       reqParams = { ...reqParams, ...sortParams }
       reqParams.page = 1
       goodsList.value = []

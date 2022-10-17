@@ -10,7 +10,7 @@
     <a href="javascript:;" class="carousel-btn prev" @click="toggle(-1)"><i class="iconfont icon-angle-left"></i></a>
     <a href="javascript:;" class="carousel-btn next" @click="toggle(1)"><i class="iconfont icon-angle-right"></i></a>
     <div class="carousel-indicator">
-      <span v-for="(item,i) in sliders" :key="i" :class="{active:index===i}"></span>
+      <span v-for="(item,i) in sliders" :key="i" :class="{active:index===i }" @click="changePoint(i)"></span>
     </div>
   </div>
 </template>
@@ -75,11 +75,15 @@ export default {
       }
       index.value = newIndex
     }
+    // 精确点击
+    const changePoint = (i) => {
+      index.value = i
+    }
     // 组件消耗，清理定时器
     onUnmounted(() => {
       clearInterval(timer)
     })
-    return { index, stop, start, toggle }
+    return { index, stop, start, toggle, changePoint }
   }
 }
 </script>

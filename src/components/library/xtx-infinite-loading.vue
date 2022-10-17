@@ -30,7 +30,7 @@ export default {
     const container = ref(null)
     useIntersectionObserver(
       container,
-      ([{ isIntersecting }], dom) => {
+      ([{ isIntersecting }], observerElement) => {
         if (isIntersecting) {
           if (props.loading === false && props.finished === false) {
             emit('infinite')
