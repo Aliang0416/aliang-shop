@@ -145,7 +145,6 @@ export default {
     const submit = async () => {
       // Form组件提供了一个 validate 函数作为整体表单校验，当是返回的是一个promise
       const valid = await formCom.value.validate()
-      console.log(valid)
       if (valid) {
         let data = null
         try {

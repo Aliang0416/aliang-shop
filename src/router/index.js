@@ -6,6 +6,7 @@ const MemberLayout = () => import('@/views/member/Layout')
 const MemberHome = () => import('@/views/member/home')
 const TopCategory = () => import('@/views/category/index.vue')
 const SubCategory = () => import('@/views/category/sub.vue')
+const Goods = () => import('@/views/goods/index')
 const routes = [
   {
     path: '/',
@@ -19,6 +20,9 @@ const routes = [
       },
       {
         path: '/category/sub/:id', component: SubCategory
+      },
+      {
+        path: '/product/:id', component: Goods
       },
       {
         path: '/member',
