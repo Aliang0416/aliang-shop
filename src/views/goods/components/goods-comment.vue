@@ -61,7 +61,9 @@
       </div>
     </div>
     <!-- 分页 -->
-    <XtxPagination @current-change="changePager" :total="total" :current-page="reqParams.page" />
+    <div class="xtx-pagination" v-if="total>0">
+    <XtxPagination @current-change="changePager" :total="total" :currentPage="reqParams.page" />
+    </div>
   </div>
 </template>
 <script>
