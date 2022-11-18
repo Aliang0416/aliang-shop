@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
+import store from '@/store'
 const Login = () => import('@/views/login/index.vue')
 const Layout = () => import('@/views/layout')
 const Home = () => import('@/views/home/index')
@@ -7,6 +8,7 @@ const MemberHome = () => import('@/views/member/home')
 const TopCategory = () => import('@/views/category/index.vue')
 const SubCategory = () => import('@/views/category/sub.vue')
 const Goods = () => import('@/views/goods/index')
+const Cart = () => import('@/views/cart/index')
 const routes = [
   {
     path: '/',
@@ -23,6 +25,9 @@ const routes = [
       },
       {
         path: '/product/:id', component: Goods
+      },
+      {
+        path: '/cart', component: Cart
       },
       {
         path: '/member',
@@ -43,6 +48,17 @@ const router = createRouter({
   scrollBehavior () {
     return { left: 0, top: 0 }
   }
+})
+
+// 前置导航守卫
+router.beforeEach((to, from, next) => {
+  // 用户信息
+  const { token } = store.state.user.profile
+  // 跳转去member开头的地址却没有登录
+  if (to.path.startsWith('/member') && !token) {
+    next({ path: '/login', query: { redirectUrl: to.fullPath } })
+  }
+  next()
 })
 
 export default router

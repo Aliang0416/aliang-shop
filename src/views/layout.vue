@@ -1,7 +1,7 @@
 <template>
   <nav>
     <AppTopnav></AppTopnav>
-    <AppTop></AppTop>
+    <app-header/>
   </nav>
   <AppHeaderSticky/>
   <main>
@@ -15,13 +15,13 @@
 
 <script>
 import AppTopnav from '@/components/app-topnav.vue'
-import AppTop from '@/components/app-top.vue'
 import AppFooter from '../components/app-footer.vue'
 import { useStore } from 'vuex'
 import AppHeaderSticky from '@/components/app-header-sticky.vue'
+import AppHeader from '@/components/app-header.vue'
 export default {
   name: 'xtx-layout',
-  components: { AppTopnav, AppTop, AppFooter, AppHeaderSticky },
+  components: { AppTopnav, AppFooter, AppHeaderSticky, AppHeader },
   setup () {
     const store = useStore()
     store.dispatch('category/getList')

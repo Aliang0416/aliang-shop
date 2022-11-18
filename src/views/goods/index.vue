@@ -24,7 +24,7 @@
           <!-- 数量组件 -->
           <XtxNumbox label="数量" v-model="num" :max="goods.inventory"/>
           <!-- 按钮组件 -->
-          <XtxButton type="primary" style="margin-top:20px;">加入购物车</XtxButton>
+          <XtxButton @click="insertCart" type="primary" style="margin-top:20px;">加入购物车</XtxButton>
         </div>
       </div>
       <!-- 商品推荐 -->
@@ -55,6 +55,7 @@
 <script>
 import GoodsRelevant from './components/goods-relevant'
 import { nextTick, ref, watch, provide } from 'vue'
+import Message from '@/components/library/Message'
 import { findGoods } from '@/api/product'
 import { useRoute } from 'vue-router'
 import GoodsImage from './components/goods-image.vue'
@@ -66,11 +67,40 @@ import XtxButton from '@/components/library/xtx-button.vue'
 import GoodsTabs from './components/goods-tabs.vue'
 import GoodsHot from './components/goods-hot.vue'
 import GoodsWarn from './components/goods-warn.vue'
+import { useStore } from 'vuex'
 export default {
   name: 'XtxGoodsPage',
   components: { GoodsRelevant, GoodsImage, GoodsSales, GoodsName, GoodsSku, XtxNumbox, XtxButton, GoodsTabs, GoodsHot, GoodsWarn },
   setup () {
+    // 选择数量
     const num = ref(1)
+    // 加入购物车逻辑
+    const currSku = ref(null)
+    const store = useStore()
+    const insertCart = () => {
+      if (!currSku.value) {
+        return Message({ type: 'warn', text: '请选择商品规格' })
+      }
+      if (num.value > goods.inventory) {
+        return Message({ type: 'warn', text: '库存不足' })
+      }
+      store.dispatch('cart/insertCart', {
+        id: goods.value.id,
+        skuId: currSku.value.skuId,
+        name: goods.value.name,
+        picture: goods.value.mainPictures[0],
+        price: currSku.value.price,
+        nowPrice: currSku.value.price,
+        count: num.value,
+        attrsText: currSku.value.specsText,
+        selected: true,
+        isEffective: true,
+        stock: currSku.value.inventory
+      }).then(() => {
+        Message({ type: 'success', text: '加入购物车成功' })
+      })
+    }
+    // 获取商品详情
     const goods = useGoods()
     provide('goods', goods)
     // sku改变时候触发
@@ -79,9 +109,12 @@ export default {
         goods.value.price = sku.price
         goods.value.oldPrice = sku.oldPrice
         goods.value.inventory = sku.inventory
+        currSku.value = sku
+      } else {
+        currSku.value = null
       }
     }
-    return { goods, changeSku, num }
+    return { goods, changeSku, num, insertCart }
   }
 }
 // 获取商品详情
