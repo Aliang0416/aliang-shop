@@ -34,7 +34,7 @@ export default {
     },
     // 选中商品总金额
     selectedAmount (state, getters) {
-      return getters.selectedList.reduce((p, c) => p + (c.nowPrice * 100 * c.count), 0) / 100
+      return (getters.selectedList.reduce((p, c) => p + (c.nowPrice * 100 * c.count), 0) / 100).toFixed(2)
     },
     // 是否全选
     isCheckAll (state, getters) {
@@ -78,11 +78,12 @@ export default {
     // 加入购物车
     insertCart (ctx, goods) {
       return new Promise((resolve, reject) => {
-        if (ctx.rootState.user.token === '123') {
+        if (ctx.rootState.user.profile.token) {
           // 已登录 TODO
           insertCart(goods).then(() => {
             return findCartList()
           }).then((data) => {
+            console.log(data)
             ctx.commit('setCartList', data.result)
             resolve()
           })
@@ -97,7 +98,7 @@ export default {
     updateCart (ctx, goods) {
       // goods 中：必须有skuId，其他想修改的属性 selected  count
       return new Promise((resolve, reject) => {
-        if (ctx.rootState.user.profile.token === '123') {
+        if (ctx.rootState.user.profile.token) {
           // 登录 TODO
           updateCart(goods).then(() => {
             return findCartList()
@@ -115,10 +116,9 @@ export default {
     // 获取购物车列表
     findCartList (ctx) {
       return new Promise((resolve, reject) => {
-        if (ctx.rootState.user.profile.token === '123') {
+        if (ctx.rootState.user.profile.token) {
           // 登录 TODO
           findCartList().then(data => {
-            console.log(data)
             ctx.commit('setCartList', data.result)
             resolve()
           })
@@ -145,7 +145,7 @@ export default {
     // 删除购物车商品
     deleteCart (ctx, skuId) {
       return new Promise((resolve, reject) => {
-        if (ctx.rootState.user.profile.token === '123') {
+        if (ctx.rootState.user.profile.token) {
           // 登录 TODO
           deleteCart([skuId]).then(() => {
             return findCartList()
@@ -163,7 +163,7 @@ export default {
     // 做有效商品的全选&反选
     checkAllCart (ctx, selected) {
       return new Promise((resolve, reject) => {
-        if (ctx.rootState.user.profile.token === '123') {
+        if (ctx.rootState.user.profile.token) {
           // 登录 TODO
           const ids = ctx.getters.validList.map(item => item.skuId)
           checkAllCart({ selected, ids }).then(() => {
@@ -185,7 +185,7 @@ export default {
     // 批量删除选中商品
     batchDeleteCart (ctx, isClear) {
       return new Promise((resolve, reject) => {
-        if (ctx.rootState.user.profile.token === '123') {
+        if (ctx.rootState.user.profile.token) {
           // 登录 TODO
           // 得到需要删除的商品列表（失效，选中）的skuId集合
           const ids = ctx.getters[isClear ? 'invalidList' : 'selectedList'].map(item => item.skuId)
@@ -208,7 +208,7 @@ export default {
     // 修改sku规格函数
     updateCartSku (ctx, { oldSkuId, newSku }) {
       return new Promise((resolve, reject) => {
-        if (ctx.rootState.user.profile.token === '123') {
+        if (ctx.rootState.user.profile.token) {
           // 登录 TODO
           // 1. 获取原先商品的数量
           // 2. 删除原先商品

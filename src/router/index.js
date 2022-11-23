@@ -9,6 +9,9 @@ const TopCategory = () => import('@/views/category/index.vue')
 const SubCategory = () => import('@/views/category/sub.vue')
 const Goods = () => import('@/views/goods/index')
 const Cart = () => import('@/views/cart/index')
+const PayCheckout = () => import('@/views/member/pay/checkout.vue')
+const PayIndex = () => import('@/views/member/pay/index')
+const PayResult = () => import('@/components/pay/pay-result.vue')
 const routes = [
   {
     path: '/',
@@ -28,6 +31,15 @@ const routes = [
       },
       {
         path: '/cart', component: Cart
+      },
+      {
+        path: '/member/checkout', component: PayCheckout
+      },
+      {
+        path: '/member/pay', component: PayIndex
+      },
+      {
+        path: '/member/order/:id', component: PayResult, props: true
       },
       {
         path: '/member',
